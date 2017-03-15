@@ -13,6 +13,22 @@ to test
   ]
   
   show morphology:slope 0
+  show morphology:entropy 0
+  show morphology:distance 0
+  show morphology:moran 0
+end
+
+to autocorrelated
+   ask patches [
+    set variable-2 random-float 1
+  ]
+   show morphology:moran 1
+   
+  ask patches [set variable-2 0] 
+   
+  ask n-of 3 patches [set variable-2 1]
+  repeat 10 [diffuse variable-2 0.1]
+  show morphology:moran 1
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -49,6 +65,23 @@ BUTTON
 73
 NIL
 test
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+31
+94
+154
+127
+NIL
+autocorrelated
 NIL
 1
 T

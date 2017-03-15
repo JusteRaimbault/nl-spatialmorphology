@@ -51,7 +51,8 @@ class Slope extends DefaultReporter {
   override def getSyntax = reporterSyntax(Array(NumberType), ListType)
   def report(args: Array[Argument], context: Context): AnyRef = {
      def patchVar =  Tools.getPatchVar(args,context)
-     return(List(Measures.slope(patchVar)).toLogoList)
+     val res = Measures.slope(patchVar)
+     return(List(res._1,res._2).toLogoList)
   }
 }
 
