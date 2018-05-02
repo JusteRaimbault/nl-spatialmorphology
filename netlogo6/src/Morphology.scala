@@ -1,6 +1,9 @@
 
 import org.nlogo.api._
-import org.nlogo.api.Syntax._
+//import org.nlogo.api.Syntax._
+import org.nlogo.core.Syntax
+import org.nlogo.core.Syntax.{ NumberType, ListType }
+import org.nlogo.core.LogoList
 import org.nlogo.api.ScalaConversions._
 import org.apache.commons.math3.stat.regression.SimpleRegression
 import org.apache.commons.math3.util.MathArrays
@@ -19,8 +22,9 @@ class Morphology extends DefaultClassManager {
 
 
 
-class GetPatchVar extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(NumberType), ListType)
+class GetPatchVar extends Reporter {
+  //override def getSyntax = Syntax.reporterSyntax(right = Array(NumberType), ret = ListType)
+  override def getSyntax = Syntax.reporterSyntax(right = List(NumberType),ret = ListType)
 
   def report(args: Array[Argument], context: Context): AnyRef = {
     val n = args(0).getIntValue + 5 // add constant value to skip built-in patch variables
@@ -29,7 +33,7 @@ class GetPatchVar extends DefaultReporter {
     //def patchVar = ((ReferenceType) args(0)).getReporter
     //Dimension gridSize = new Dimension(world.worldWidth(), world.worldHeight());
 
-    var res = Seq.empty[org.nlogo.api.LogoList]
+    var res = Seq.empty[org.nlogo.core.LogoList]
 
     for (px <- world.minPxcor to world.maxPxcor) {
       var currentrow = Seq.empty[Double]
@@ -47,8 +51,8 @@ class GetPatchVar extends DefaultReporter {
 }
 
 
-class Slope extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(NumberType), ListType)
+class Slope extends Reporter {
+  override def getSyntax = Syntax.reporterSyntax(right = List(NumberType), ret = ListType)
   def report(args: Array[Argument], context: Context): AnyRef = {
      def patchVar =  Tools.getPatchVar(args,context)
      val res = Measures.slope(patchVar)
@@ -56,8 +60,8 @@ class Slope extends DefaultReporter {
   }
 }
 
-class Distance extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(NumberType), NumberType)
+class Distance extends Reporter {
+  override def getSyntax = Syntax.reporterSyntax(right = List(NumberType), ret = NumberType)
   def report(args: Array[Argument], context: Context): AnyRef = {
      def patchVar =  Tools.getPatchVar(args,context)
      val res: java.lang.Double = Measures.distance_convol(patchVar)
@@ -65,8 +69,8 @@ class Distance extends DefaultReporter {
   }
 }
 
-class Entropy extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(NumberType), NumberType)
+class Entropy extends Reporter {
+  override def getSyntax = Syntax.reporterSyntax(right = List(NumberType), ret = NumberType)
   def report(args: Array[Argument], context: Context): AnyRef = {
      def patchVar =  Tools.getPatchVar(args,context)
      val res: java.lang.Double = Measures.entropy(patchVar)
@@ -75,8 +79,8 @@ class Entropy extends DefaultReporter {
 }
 
 
-class Moran extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(NumberType), NumberType)
+class Moran extends Reporter {
+  override def getSyntax = Syntax.reporterSyntax(right = List(NumberType), ret = NumberType)
   def report(args: Array[Argument], context: Context): AnyRef = {
      def patchVar =  Tools.getPatchVar(args,context)
      val res: java.lang.Double = Measures.moran_convol(patchVar)
@@ -151,12 +155,21 @@ object Measures {
       math.sqrt(a * a + b * b)
     }
 
+  /*
     def zipWithPosition(m :Seq[Seq[Double]]): Seq[(Double, (Int,Int))] = {
       for {
         (row, i) <- m.zipWithIndex
         (content, j) <- row.zipWithIndex
       } yield content ->(i, j)
     }
+*/
+
+  def zipWithPosition(m :Seq[Seq[Double]]): Seq[(Double, (Int,Int))] = {
+    for {
+      (row, i) <- m.zipWithIndex
+      (content, j) <- row.zipWithIndex
+    } yield (content,(i, j))
+  }
 
 
     def entropy(matrix: Seq[Seq[Double]]) = {
