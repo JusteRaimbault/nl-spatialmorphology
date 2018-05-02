@@ -1,6 +1,5 @@
 
 import org.nlogo.api._
-//import org.nlogo.api.Syntax._
 import org.nlogo.core.Syntax
 import org.nlogo.core.Syntax.{ NumberType, ListType }
 import org.nlogo.core.LogoList
@@ -33,7 +32,7 @@ class GetPatchVar extends Reporter {
     //def patchVar = ((ReferenceType) args(0)).getReporter
     //Dimension gridSize = new Dimension(world.worldWidth(), world.worldHeight());
 
-    var res = Seq.empty[org.nlogo.core.LogoList]
+    var res = Seq.empty[LogoList]
 
     for (px <- world.minPxcor to world.maxPxcor) {
       var currentrow = Seq.empty[Double]

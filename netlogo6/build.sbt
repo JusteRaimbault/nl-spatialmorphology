@@ -1,6 +1,7 @@
 enablePlugins(org.nlogo.build.NetLogoExtension)
 
-scalaVersion := "2.11.7"
+//scalaVersion := "2.11.7"
+scalaVersion := "2.12.2"
 
 scalaSource in Compile := { baseDirectory.value  / "src" }
 
