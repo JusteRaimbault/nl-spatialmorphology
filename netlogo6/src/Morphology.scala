@@ -47,6 +47,14 @@ class GetPatchVar extends Reporter {
       return(res.toLogoList)
 
   }
+
+  /*
+  val inputs = Seq.fill(10)(1.0)
+  (Iterator.from(1, 2).takeWhile(_ < inputs.size).map(inputs(_))).zip(Iterator.from(0, 2).takeWhile(_ < inputs.size).map(inputs(_))).map{
+    case (x1,x2) => (x1 - x2)*(x1 - x2)
+  }.sum
+  */
+
 }
 
 
